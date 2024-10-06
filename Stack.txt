@@ -1,0 +1,19 @@
+3D generation:
+Explore PIFuHD (see pifu doc)
+If this doesn't work, find some alternative cnn
+all in python^
+
+3D management:
+see database
+how will we store clothes/models?
+
+3D rendering:
+WebGL and three.js
+javascript and GLTF
+
+database:
+SQL or noSQL, whatever is fine and we can migrate later
+
+frontend:
+three.js for the 3D rendering, rest of the site can be figured out
+website for MVP, FOCUS ON UX NOT UI
