@@ -1,0 +1,6 @@
+John - backend - webscraping and database
+AD - backend - webscraping and ML
+Nishit - backend/frontend - webscraping and streamlet
+Pranav - backend - webscraping and ML
+Wyatt - backend - 3D/three.js
+Devan - backend - webscraping and ML

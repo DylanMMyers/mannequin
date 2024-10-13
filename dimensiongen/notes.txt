@@ -1,0 +1,46 @@
+"C:\coding\mannequin\dimensiongen\dylan_test1.jpg"
+"C:\coding\mannequin\dimensiongen\sideview_test.jpg"
+"C:\coding\mannequin\dimensiongen\kneestogether.jpg"
+"C:\coding\mannequin\dimensiongen\kneestogether_better.jpg"
+"C:\coding\mannequin\dimensiongen\images\frontview_goated.jpg"
+"C:\coding\mannequin\dimensiongen\images\sideview_goated.jpg"
+"C:\coding\mannequin\dimensiongen\images\armstogether.jpg"
+
+python dimension_reading.py "C:\coding\mannequin\dimensiongen\images\frontview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\sideview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\armstogether.jpg" 72 output15.csv
+python vis.py "C:\coding\mannequin\dimensiongen\images\frontview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\sideview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\armstogether.jpg"
+
+1. Specific pose, knees together and face camera directly
+2. Skin tight clothes are very good and basically a necessity
+3. Solid background
+4. Stand straight up and down - AS SYMMETRICAL AS POSSIBLE
+5. Picture at waist level
+6. Avoid 0.5, use 1x lens
+7. Good lighting
+
+We should build a feature for the camera to make it as helpful/easy as possible
+
+Check list:
+Lower leg length: GOOD
+Lower leg width: GOOD
+
+Upper leg length: GOOD
+Upper leg width: GOOD
+
+Lower arm length: DECENT
+Lower arm width: BAD
+
+Upper arm length: GOOD
+Upper arm width: BAD
+
+Torso width: DECENT (Find better method than right and left shoulder, maybe avg of hips and shoulders?)
+Torso length/height: BAD (WTF NOSE AND HEEL)
+
+ALL DEPTHS ARE TRASH RN, FIX LENGHT/WIDTH BEFORE TACKLING
+HOWEVER, WIDTH CAN BE CONSIDERED DEPTH FOR NOW^^^ **********
+
+TORSO WIDTH SHOULD BE AROUND 15-18ish
+HEIGHT SHOULD BE 20-22
+
+TORSO DEPTH :( VERY ANNOYING
+
+ARM WIDTH/DEPTH IDEAS
