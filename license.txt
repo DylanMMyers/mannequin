@@ -1,0 +1,11 @@
+Model Information:
+* title:	Wooden Mannequin
+* source:	https://sketchfab.com/3d-models/wooden-mannequin-2cbc5ee62b144c13a3daa74b833640b3
+* author:	Chase.Crawford (https://sketchfab.com/Chase.Crawford)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Wooden Mannequin" (https://sketchfab.com/3d-models/wooden-mannequin-2cbc5ee62b144c13a3daa74b833640b3) by Chase.Crawford (https://sketchfab.com/Chase.Crawford) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
