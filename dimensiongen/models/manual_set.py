@@ -4,10 +4,40 @@ import csv
 
 class MeasurementTool:
     def __init__(self):
-        self.points = []         # Stores points for front image
-        self.side_points = []    # Stores points for side image
-        self.point_labels = ["Knee 1", "Knee 2", "Ankle 1", "Ankle 2"]  # Labels for front image points
-        self.side_point_labels = ["Depth Point 1", "Depth Point 2"]     # Labels for side image points
+        self.points = []
+        self.side_points = []
+        # Length/Front list
+        self.point_labels = [
+            "Left Shoulder", "Right Shoulder",
+            "Left Mid Torso", "Right Mid Torso",
+            "Left Hip", "Right Hip",
+            "Left Upper Arm (Left)", "Left Upper Arm (Right)",
+            "Left Elbow (Left)", "Left Elbow (Right)",
+            "Left Lower Arm (Left)", "Left Lower Arm (Right)",
+            "Right Upper Arm (Left)", "Right Upper Arm (Right)",
+            "Right Elbow (Left)", "Right Elbow (Right)",
+            "Right Lower Arm (Left)", "Right Lower Arm (Right)",
+            "Left Upper Leg (Left)", "Left Upper Leg (Right)",
+            "Left Knee (Left)", "Left Knee (Right)",
+            "Left Lower Leg (Left)", "Left Lower Leg (Right)",
+            "Right Upper Leg (Left)", "Right Upper Leg (Right)",
+            "Right Knee (Left)", "Right Knee (Right)",
+            "Right Lower Leg (Left)", "Right Lower Leg (Right)"
+        ]
+
+        # Depth/Side list
+        self.side_point_labels = [
+            "Shoulder (Left)", "Shoulder (Right)",
+            "Mid Torso (Left)", "Mid Torso (Right)",
+            "Hip (Left)", "Hip (Right)",
+            "Upper Arm (Left)", "Upper Arm (Right)",
+            "Left Elbow (Side)", "Right Elbow (Side)",
+            "Lower Arm (Left)", "Lower Arm (Right)",
+            "Upper Leg (Left)", "Upper Leg (Right)",
+            "Knee (Left)", "Knee (Right)",
+            "Lower Leg (Left)", "Lower Leg (Right)"
+        ]
+
         self.point_idx = 0       # Track the current front point index
         self.side_point_idx = 0  # Track the current side point index
         self.image = None        # Front image
@@ -141,10 +171,10 @@ class MeasurementTool:
 tool = MeasurementTool()
 
 # Load and process front view for width measurements
-tool.load_image("C:\\coding\\mannequin\\dimensiongen\\images\\frontview_goated.jpg")
+tool.load_image("C:\\coding\\man\\mannequin\\dimensiongen\\images\\frontview_goated.jpg")
 
 # Load and process side view for depth measurements
-tool.load_side_image("C:\\coding\\mannequin\\dimensiongen\\images\\sideview_goated.jpg")
+tool.load_side_image("C:\\coding\\man\\mannequin\\dimensiongen\\images\\sideview_goated.jpg")
 
 # After placing the points, calculate, display, and save the distances
 tool.calculate_and_display_results()
