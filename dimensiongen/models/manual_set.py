@@ -8,9 +8,10 @@ class MeasurementTool:
         self.side_points = []
         # Length/Front list
         self.point_labels = [
-            "Left Shoulder", "Right Shoulder",
-            "Left Mid Torso", "Right Mid Torso",
-            "Left Hip", "Right Hip",
+            "Shoulders (Left)", "Shoulders (Right)",
+            "Chest (Left)", "Chest (Right)",
+            "Hips (Left)", "Hips (Right)",
+            "Waist (Left)", "Waist (Right)",
             "Left Upper Arm (Left)", "Left Upper Arm (Right)",
             "Left Elbow (Left)", "Left Elbow (Right)",
             "Left Lower Arm (Left)", "Left Lower Arm (Right)",
@@ -22,7 +23,13 @@ class MeasurementTool:
             "Left Lower Leg (Left)", "Left Lower Leg (Right)",
             "Right Upper Leg (Left)", "Right Upper Leg (Right)",
             "Right Knee (Left)", "Right Knee (Right)",
-            "Right Lower Leg (Left)", "Right Lower Leg (Right)"
+            "Right Lower Leg (Left)", "Right Lower Leg (Right)",
+            "Head Length (Top)", "Head Length (Bottom)",
+            "Arm Length (Left, Top)", "Arm Length (Left, Bottom)",
+            "Arm Length (Right, Top)", "Arm Length (Right, Bottom)",
+            "Torso Length (Top)", "Torso Length (Bottom)",
+            "Leg Length (Left, Top)", "Leg Length (Left, Bottom)",
+            "Leg Length (Right, Top)", "Leg Length (Right, Bottom)"
         ]
 
         # Depth/Side list
@@ -30,6 +37,7 @@ class MeasurementTool:
             "Shoulder (Left)", "Shoulder (Right)",
             "Mid Torso (Left)", "Mid Torso (Right)",
             "Hip (Left)", "Hip (Right)",
+            "Waist (Left)", "Waist (Right)",
             "Upper Arm (Left)", "Upper Arm (Right)",
             "Left Elbow (Side)", "Right Elbow (Side)",
             "Lower Arm (Left)", "Lower Arm (Right)",
