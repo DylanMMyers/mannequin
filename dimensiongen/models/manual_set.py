@@ -1,6 +1,7 @@
 import cv2
 import math
 import csv
+import tkinter as tk
 
 class MeasurementTool:
     def __init__(self):
@@ -45,12 +46,23 @@ class MeasurementTool:
             "Knee (Left)", "Knee (Right)",
             "Lower Leg (Left)", "Lower Leg (Right)"
         ]
+        self.point_idx = 0
+        self.side_point_idx = 0
+        self.image = None
+        self.side_image = None
+        self.display_width = 800
 
-        self.point_idx = 0       # Track the current front point index
-        self.side_point_idx = 0  # Track the current side point index
-        self.image = None        # Front image
-        self.side_image = None   # Side image
-        self.display_width = 800 # Desired display width for consistent scaling
+    def start_tkinter_window(self):
+        """Create and display the tkinter window with instructions."""
+        root = tk.Tk()
+        root.title("Instructions")
+        
+        # Add banner/instruction text
+        label = tk.Label(root, text="Select points on the front and side view images.", font=("Helvetica", 16))
+        label.pack(pady=20)
+
+        # Start the tkinter event loop
+        root.mainloop()
 
     def load_image(self, image_path):
         """Load and display the front image."""
@@ -174,15 +186,15 @@ class MeasurementTool:
 
         print(f"Results exported to {filename}")
 
-
 # Usage
 tool = MeasurementTool()
 
-# Load and process front view for width measurements
-tool.load_image("C:\\coding\\man\\mannequin\\dimensiongen\\images\\frontview_goated.jpg")
+# Start tkinter window for instructions
+tool.start_tkinter_window()
 
-# Load and process side view for depth measurements
-tool.load_side_image("C:\\coding\\man\\mannequin\\dimensiongen\\images\\sideview_goated.jpg")
+# Load and process front and side images for measurements
+tool.load_image("C:\\coding\\mannequin\\dimensiongen\\images\\frontview_goated.jpg")
+tool.load_side_image("C:\\coding\\mannequin\\dimensiongen\\images\\sideview_goated.jpg")
 
-# After placing the points, calculate, display, and save the distances
+# After placing points, calculate and display results
 tool.calculate_and_display_results()
