@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My first three.js app</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .input-field {
+            margin-bottom: 15px;
+        }
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-field input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Enter Body Measurements</h2>
+
+        <div class="input-field">
+            <label for="legSize">Leg Size (cm):</label>
+            <input type="number" id="legSize" name="legSize" placeholder="Enter leg size">
+        </div>
+
+        <div class="input-field">
+            <label for="armSize">Arm Size (cm):</label>
+            <input type="number" id="armSize" name="armSize" placeholder="Enter arm size">
+        </div>
+
+        <div class="input-field">
+            <label for="torsoSize">Torso Size (cm):</label>
+            <input type="number" id="torsoSize" name="torsoSize" placeholder="Enter torso size">
+        </div>
+
+        <button id="submitBtn" class="submit-btn">Submit</button>
+    </div>
+
+    <script type="module">
+        import { handleSizes } from './main.js';
+
+        function submitSizes() {
+            const legSize = document.getElementById('legSize').value;
+            const armSize = document.getElementById('armSize').value;
+            const torsoSize = document.getElementById('torsoSize').value;
+
+            // Pass the values to the function in main.js
+            handleSizes(legSize, armSize, torsoSize);
+        }
+
+        // Attach the event listener programmatically
+        document.getElementById('submitBtn').addEventListener('click', submitSizes);
+    </script>
+
+</body>
+</html>
