@@ -68,27 +68,51 @@ scene.add(plane);
 let mixers = [];
 
 const loader = new FBXLoader();
-const anim = new FBXLoader();
-let mannequinModel;
+//const anim = new FBXLoader(); // ### NEEDED FOR ANIMATION
+let skeleton;
+let skinnedMesh;
+
+// #### DECLARE BONES ####
+let spineBone;
 
 loader.load('./Assets/AnimatedMannequin/MannequinModel.fbx', function(fbxModel) {
     fbxModel.scale.setScalar(0.1);
-    mannequinModel = fbxModel;
     console.log("Loaded fbx");
+
+    fbxModel.traverse((child) => {
+        if (child.isSkinnedMesh) {
+            skinnedMesh = child;
+        }
+    });
+
+    if (skinnedMesh && skinnedMesh.skeleton) {
+        skeleton = skinnedMesh.skeleton;
+        // ### SET BONE VALUES ###
+        spineBone = skeleton.getBoneByName('mixamorig1Spine');
+    }
+
     scene.add(fbxModel);
 
-    // Load animation after the model is loaded
-    anim.load('./Assets/AnimatedMannequin/DanceAnimation.fbx', function(animationFbx) {
-        const mixer = new THREE.AnimationMixer(fbxModel);
-        mixers.push(mixer);
+    // Prints out all the bones in the model
+    //const skeletonHelper = new THREE.SkeletonHelper(fbxModel);
+    // skeletonHelper.bones.forEach((bone, index) => {
+    // console.log(`Bone ${index}: ${bone.name}`);
+    // });
 
-        const animation = animationFbx.animations[0];
-        const action = mixer.clipAction(animation);
-        action.play();
-    }, undefined, function(error) {
-        console.log("Failed to load animation:");
-        console.error(error);
-    });
+    // #### Animation player ####
+    // (DO NOT USE ANIMATIONS IF MODIFYING SKELETON/BONES)
+    // Load animation after the model is loaded
+    // anim.load('./Assets/AnimatedMannequin/DanceAnimation.fbx', function(animationFbx) {
+    //     const mixer = new THREE.AnimationMixer(fbxModel);
+    //     mixers.push(mixer);
+
+    //     const animation = animationFbx.animations[0];
+    //     const action = mixer.clipAction(animation);
+    //     action.play();
+    // }, undefined, function(error) {
+    //     console.log("Failed to load animation:");
+    //     console.error(error);
+    // });
 }, undefined, function(error) {
     console.log("Failed to load model:");
     console.error(error);
@@ -96,33 +120,43 @@ loader.load('./Assets/AnimatedMannequin/MannequinModel.fbx', function(fbxModel) 
 
 // ########## TAKE IN PARAMETERS FROM HTML ##################
 // Global torsoSize variable to hold the value from the form
-let torsoSize = 10; // Default value
-let legSize = 10;
-let armSize = 10;
+let torsoSize = 1; // Default value
+let legSize = 1;
+let armSize = 1;
 
 // Function to handle size updates from the HTML form
 export function handleSizes(updatedLegSize, updatedArmSize, updatedTorsoSize) {
-    console.log("Received sizes:");
-    console.log("Leg Size:", updatedLegSize);
-    console.log("Arm Size:", updatedArmSize);
-    console.log("Torso Size:", updatedTorsoSize);
+    // console.log("Received sizes:");
+    // console.log("Leg Size:", updatedLegSize);
+    // console.log("Arm Size:", updatedArmSize);
+    // console.log("Torso Size:", updatedTorsoSize);
 
     // Update the global torsoSize variable
     torsoSize = parseFloat(updatedTorsoSize) || 10; // Set a default if input is invalid
     legSize = parseFloat(updatedLegSize) || 10;
     armSize = parseFloat(updatedArmSize) || 10;
+
+    // ##### Updating bone sizes #####
+    spineBone.scale.setY(torsoSize);
 }
 
 
 /// ############## RENDER LOOP #####################
-function animate() {
-    requestAnimationFrame(animate);
+function animate() { // runs on every render frame
 
-    const delta = clock.getDelta();
-    for (const mixer of mixers) {
-        mixer.update(delta);
+    // ### For actual animation: ###
+    // requestAnimationFrame(animate);
+    // const delta = clock.getDelta();
+    // for (const mixer of mixers) {
+    //     mixer.update(delta);
+    // }
+
+    // Update skeleton render
+    if (skinnedMesh && skinnedMesh.skeleton) {
+        skinnedMesh.skeleton.update();
     }
 
+    // Update scene
     renderer.render(scene, camera);
 }
 
