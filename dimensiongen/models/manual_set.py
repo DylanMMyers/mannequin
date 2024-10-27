@@ -1,200 +1,214 @@
+import sys
 import cv2
+import numpy as np
 import math
 import csv
-import tkinter as tk
+from PyQt5.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QLabel, QPushButton, QVBoxLayout,
+    QHBoxLayout, QFileDialog, QMessageBox, QInputDialog
+)
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtCore import Qt
 
-class MeasurementTool:
+class MeasurementTool(QMainWindow):
     def __init__(self):
-        self.points = []
+        super().__init__()
+        self.setWindowTitle("Measurement Tool")
+
+        # Variables to hold images, points, and scale factor
+        self.front_image = None
+        self.current_image = None
+        self.front_points = []
         self.side_points = []
-        # Length/Front list
-        self.point_labels = [
-            "Shoulders (Left)", "Shoulders (Right)",
-            "Chest (Left)", "Chest (Right)",
-            "Hips (Left)", "Hips (Right)",
-            "Waist (Left)", "Waist (Right)",
-            "Left Upper Arm (Left)", "Left Upper Arm (Right)",
-            "Left Elbow (Left)", "Left Elbow (Right)",
-            "Left Lower Arm (Left)", "Left Lower Arm (Right)",
-            "Right Upper Arm (Left)", "Right Upper Arm (Right)",
-            "Right Elbow (Left)", "Right Elbow (Right)",
-            "Right Lower Arm (Left)", "Right Lower Arm (Right)",
-            "Left Upper Leg (Left)", "Left Upper Leg (Right)",
-            "Left Knee (Left)", "Left Knee (Right)",
-            "Left Lower Leg (Left)", "Left Lower Leg (Right)",
-            "Right Upper Leg (Left)", "Right Upper Leg (Right)",
-            "Right Knee (Left)", "Right Knee (Right)",
-            "Right Lower Leg (Left)", "Right Lower Leg (Right)",
-            "Head Length (Top)", "Head Length (Bottom)",
-            "Arm Length (Left, Top)", "Arm Length (Left, Bottom)",
-            "Arm Length (Right, Top)", "Arm Length (Right, Bottom)",
-            "Torso Length (Top)", "Torso Length (Bottom)",
-            "Leg Length (Left, Top)", "Leg Length (Left, Bottom)",
-            "Leg Length (Right, Top)", "Leg Length (Right, Bottom)"
-        ]
-
-        # Depth/Side list
-        self.side_point_labels = [
-            "Shoulder (Left)", "Shoulder (Right)",
-            "Mid Torso (Left)", "Mid Torso (Right)",
-            "Hip (Left)", "Hip (Right)",
-            "Waist (Left)", "Waist (Right)",
-            "Upper Arm (Left)", "Upper Arm (Right)",
-            "Left Elbow (Side)", "Right Elbow (Side)",
-            "Lower Arm (Left)", "Lower Arm (Right)",
-            "Upper Leg (Left)", "Upper Leg (Right)",
-            "Knee (Left)", "Knee (Right)",
-            "Lower Leg (Left)", "Lower Leg (Right)"
-        ]
+        self.point_front_labels = ["testt", "test2"] 
+        """[
+            "Top of Head", "Left Shoulder", "Right Shoulder", "Chest", "Waist",
+            "Left Hip", "Right Hip", "Left Knee", "Right Knee", "Left Ankle",
+            "Right Ankle", "Bottom of Feet"
+        ]"""
+        self.point_side_labels = ["test", "test56356"]
         self.point_idx = 0
-        self.side_point_idx = 0
-        self.image = None
-        self.side_image = None
-        self.display_width = 800
+        self.user_height = None  # Store user's height
+        self.scale_factor = None  # Scale factor (inches per pixel)
+        self.iter = 0
 
-    def start_tkinter_window(self):
-        """Create and display the tkinter window with instructions."""
-        root = tk.Tk()
-        root.title("Instructions")
-        
-        # Add banner/instruction text
-        label = tk.Label(root, text="Select points on the front and side view images.", font=("Helvetica", 16))
-        label.pack(pady=20)
+        self.init_ui()
 
-        # Start the tkinter event loop
-        root.mainloop()
+    def init_ui(self):
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
 
-    def load_image(self, image_path):
-        """Load and display the front image."""
-        self.image = cv2.imread(image_path)
-        if self.image is None:
-            raise FileNotFoundError(f"Error: Could not load image from {image_path}")
-        
-        self.image = self.resize_image(self.image)
-        self.show_image(self.image, "Front View", self.mouse_callback)
-    
-    def load_side_image(self, image_path):
-        """Load and display the side image."""
-        self.side_image = cv2.imread(image_path)
-        if self.side_image is None:
-            raise FileNotFoundError(f"Error: Could not load image from {image_path}")
-        
-        self.side_image = self.resize_image(self.side_image)
-        self.show_image(self.side_image, "Side View", self.mouse_callback_side)
+        self.image_label = QLabel()
+        self.image_label.setFixedSize(800, 600)
+        self.image_label.setStyleSheet("background-color: black;")
 
-    def resize_image(self, img):
-        """Resize the image while maintaining aspect ratio."""
-        height, width = img.shape[:2]
-        scale = self.display_width / width
-        resized_image = cv2.resize(img, (self.display_width, int(height * scale)))
-        return resized_image
+        load_front_btn = QPushButton("Load Front Image")
+        load_front_btn.clicked.connect(self.load_front_image)
 
-    def show_image(self, img, window_name, callback_function):
-        """Display the image and set mouse callback."""
-        cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-        cv2.setMouseCallback(window_name, callback_function)
-        cv2.imshow(window_name, img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        next_point_btn = QPushButton("Next Point")
+        next_point_btn.clicked.connect(self.next_point)
 
-    def mouse_callback(self, event, x, y, flags, params):
-        """Callback function to handle mouse clicks for front view."""
-        if event == cv2.EVENT_LBUTTONDOWN and self.point_idx < len(self.point_labels):
-            self.points.append((x, y))
-            label = self.point_labels[self.point_idx]
-            print(f"Point {label} selected at: {x}, {y}")
-            
-            cv2.circle(self.image, (x, y), 5, (0, 255, 0), -1)
-            cv2.putText(self.image, label, (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-            self.point_idx += 1
-            cv2.imshow("Front View", self.image)
+        calculate_btn = QPushButton("Calculate Measurements")
+        calculate_btn.clicked.connect(self.calculate_measurements)
 
-    def mouse_callback_side(self, event, x, y, flags, params):
-        """Callback function to handle mouse clicks for side view."""
-        if event == cv2.EVENT_LBUTTONDOWN and self.side_point_idx < len(self.side_point_labels):
-            self.side_points.append((x, y))
-            label = self.side_point_labels[self.side_point_idx]
-            print(f"Point {label} selected at: {x}, {y}")
-            
-            cv2.circle(self.side_image, (x, y), 5, (0, 0, 255), -1)
-            cv2.putText(self.side_image, label, (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
-            self.side_point_idx += 1
-            cv2.imshow("Side View", self.side_image)
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(load_front_btn)
+        button_layout.addWidget(next_point_btn)
+        button_layout.addWidget(calculate_btn)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(self.image_label)
+        main_layout.addLayout(button_layout)
+
+        central_widget.setLayout(main_layout)
+        self.image_label.mousePressEvent = self.mouse_press_event
+
+    def load_front_image(self):
+        filename, _ = QFileDialog.getOpenFileName(self, "Open Front Image", "", "Image Files (*.png *.jpg *.bmp)")
+        if filename:
+            self.front_image = cv2.imread(filename)
+            self.current_image = self.front_image.copy()
+            self.front_points.clear()
+            self.point_idx = 0
+            self.display_image()
+            self.get_user_height()  # Prompt user for their height
+            self.next_point()
+
+    def get_user_height(self):
+        text, ok = QInputDialog.getText(self, 'Input Height', 'Enter your height in inches:')
+        if ok and text:
+            try:
+                self.user_height = float(text)
+            except ValueError:
+                QMessageBox.warning(self, "Invalid Input", "Please enter a valid number.")
+                self.get_user_height()
+
+    def display_image(self):
+        if self.current_image is not None:
+            height, width, channel = self.current_image.shape
+            bytes_per_line = 3 * width
+            q_img = QImage(self.current_image.data, width, height, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
+            pixmap = QPixmap.fromImage(q_img)
+            self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.KeepAspectRatio))
+
+    def mouse_press_event(self, event):
+        if event.button() == Qt.LeftButton and self.current_image is not None:
+            x = event.pos().x()
+            y = event.pos().y()
+            label_size = self.image_label.size()
+            pixmap_size = self.image_label.pixmap().size()
+            ratio = pixmap_size.width() / self.current_image.shape[1]
+            img_x = int(x / ratio)
+            img_y = int(y / ratio)
+            cv2.circle(self.current_image, (img_x, img_y), 5, (0, 0, 255), -1)
+              
+            if self.iter == 0:
+                if self.point_idx < len(self.point_front_labels):
+                    label = self.point_front_labels[self.point_idx]
+                    cv2.putText(self.current_image, label, (img_x + 10, img_y - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+                    self.front_points.append((img_x, img_y))
+                    self.point_idx += 1
+                    self.display_image()
+                    self.next_point()
+            else:
+                if self.point_idx < len(self.point_side_labels):
+                    label = self.point_side_labels[self.point_idx]
+                    cv2.putText(self.current_image, label, (img_x + 10, img_y - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+                    self.side_points.append((img_x, img_y))
+                    self.point_idx += 1
+                    self.display_image()
+                    self.next_point()
+
+    def next_point(self):
+        if self.iter == 0:
+            if self.point_idx < len(self.point_front_labels):
+                QMessageBox.information(self, "Next Point", f"Select point for: {self.point_front_labels[self.point_idx]}")
+            else:
+                QMessageBox.information(self, "Info", "All points have been placed.")
+        else:
+            if self.point_idx < len(self.point_front_labels):
+                QMessageBox.information(self, "Next Point", f"Select point for: {self.point_side_labels[self.point_idx]}")
+            else:
+                QMessageBox.information(self, "Info", "All points have been placed.")
+
+    def calculate_measurements(self):
+        pointlen = None
+        if self.iter == 0:
+            pointlen = len(self.front_points)
+        else:
+            pointlen = len(self.side_points)
+        if pointlen >= 2:
+            pixel_height = None
+            if self.iter == 0:
+                top_of_head = self.front_points[0]
+                bottom_of_feet = self.front_points[-1]
+                pixel_height = self.calculate_distance(top_of_head, bottom_of_feet)
+            else:
+                top_of_head = self.side_points[0]
+                bottom_of_feet = self.side_points[-1]
+                pixel_height = self.calculate_distance(top_of_head, bottom_of_feet)
+
+            if self.user_height is not None:
+                self.scale_factor = self.user_height / pixel_height
+                measurements = []
+                if self.iter == 0:
+                    for i in range(1, len(self.front_points) - 1):
+                        p1 = self.front_points[i]
+                        p2 = self.front_points[i + 1]
+                        distance_pixels = self.calculate_distance(p1, p2)
+                        distance_inches = distance_pixels * self.scale_factor
+                        label1 = self.point_front_labels[i]
+                        label2 = self.point_front_labels[i + 1]
+                        measurements.append((f"{label1} to {label2}", distance_inches))
+                        print(f"Distance between {label1} and {label2}: {distance_inches:.2f} inches")
+                else:
+                    for i in range(1, len(self.side_points) - 1):
+                        p1 = self.side_points[i]
+                        p2 = self.side_points[i + 1]
+                        distance_pixels = self.calculate_distance(p1, p2)
+                        distance_inches = distance_pixels * self.scale_factor
+                        label1 = self.point_side_labels[i]
+                        label2 = self.point_side_labels[i + 1]
+                        measurements.append((f"{label1} to {label2}", distance_inches))
+                        print(f"Distance between {label1} and {label2}: {distance_inches:.2f} inches")
+
+                self.export_to_csv(f"output_measurements{self.iter}.csv", measurements)
+                self.iter += 1
+                self.point_idx = 0
+                QMessageBox.information(self, "Calculations Complete", "Measurements calculated and saved.")
+            else:
+                QMessageBox.warning(self, "Warning", "User height is not set.")
+        else:
+            QMessageBox.warning(self, "Warning", "Not enough points to calculate measurements.")
 
     def calculate_distance(self, p1, p2):
-        """Calculate the Euclidean distance between two points."""
-        return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+        return math.hypot(p1[0] - p2[0], p1[1] - p2[1])
 
-    def draw_lines_and_display(self, img, points, labels, window_name):
-        """Draw lines between points and display the image."""
-        for i, (x, y) in enumerate(points):
-            cv2.circle(img, (x, y), 5, (0, 255, 0), -1)
-            cv2.putText(img, labels[i], (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-        
-        for i in range(0, len(points) - 1, 2):
-            cv2.line(img, points[i], points[i + 1], (255, 0, 0), 2)
-        
-        img_resized = self.resize_image(img)
-        cv2.imshow(window_name, img_resized)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-    def calculate_and_display_results(self):
-        """Calculate and display the distances for both front and side views."""
-        if len(self.points) >= 2:
-            print("\nFront View Distances:")
-            for i in range(0, len(self.points) - 1, 2):
-                p1, p2 = self.points[i], self.points[i + 1]
-                distance = self.calculate_distance(p1, p2)
-                print(f"Distance between {self.point_labels[i]} and {self.point_labels[i + 1]}: {distance:.2f} pixels")
-            self.draw_lines_and_display(self.image, self.points, self.point_labels, "Front View with Lines")
-
-        if len(self.side_points) >= 2:
-            print("\nSide View Distances:")
-            for i in range(0, len(self.side_points) - 1, 2):
-                p1, p2 = self.side_points[i], self.side_points[i + 1]
-                distance = self.calculate_distance(p1, p2)
-                print(f"Depth between {self.side_point_labels[i]} and {self.side_point_labels[i + 1]}: {distance:.2f} pixels")
-            self.draw_lines_and_display(self.side_image, self.side_points, self.side_point_labels, "Side View with Lines")
-
-        # After calculation, export the results to a CSV file
-        self.export_to_csv("points.csv")
-
-    def export_to_csv(self, filename):
-        """Export the point coordinates and distances to a CSV file."""
+    def export_to_csv(self, filename, measurements):
         with open(filename, mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["View", "Point Label", "X Coordinate", "Y Coordinate", "Distance (Pixels)"])
+            writer.writerow(["Point Label", "X Coordinate", "Y Coordinate"])
+            if self.iter == 0:
+                for i, (x, y) in enumerate(self.front_points):
+                    writer.writerow([self.point_front_labels[i], x, y])
+            else:
+                for i, (x, y) in enumerate(self.side_points):
+                    writer.writerow([self.point_side_labels[i], x, y])
 
-            # Write front view points and distances
-            if len(self.points) >= 2:
-                for i in range(len(self.points)):
-                    x, y = self.points[i]
-                    writer.writerow(["Front View", self.point_labels[i], x, y])
-                for i in range(0, len(self.points) - 1, 2):
-                    dist = self.calculate_distance(self.points[i], self.points[i + 1])
-                    writer.writerow(["Front View", f"Distance {self.point_labels[i]} - {self.point_labels[i + 1]}", "", "", dist])
-
-            # Write side view points and distances
-            if len(self.side_points) >= 2:
-                for i in range(len(self.side_points)):
-                    x, y = self.side_points[i]
-                    writer.writerow(["Side View", self.side_point_labels[i], x, y])
-                for i in range(0, len(self.side_points) - 1, 2):
-                    dist = self.calculate_distance(self.side_points[i], self.side_points[i + 1])
-                    writer.writerow(["Side View", f"Depth {self.side_point_labels[i]} - {self.side_point_labels[i + 1]}", "", "", dist])
+            writer.writerow([])
+            writer.writerow(["Measurement", "Distance (inches)"])
+            for measurement in measurements:
+                writer.writerow([measurement[0], f"{measurement[1]:.2f}"])
 
         print(f"Results exported to {filename}")
 
-# Usage
-tool = MeasurementTool()
+def main():
+    app = QApplication(sys.argv)
+    window = MeasurementTool()
+    window.show()
+    sys.exit(app.exec_())
 
-# Start tkinter window for instructions
-tool.start_tkinter_window()
-
-# Load and process front and side images for measurements
-tool.load_image("C:\\coding\\mannequin\\dimensiongen\\images\\frontview_goated.jpg")
-tool.load_side_image("C:\\coding\\mannequin\\dimensiongen\\images\\sideview_goated.jpg")
-
-# After placing points, calculate and display results
-tool.calculate_and_display_results()
+if __name__ == "__main__":
+    main()
