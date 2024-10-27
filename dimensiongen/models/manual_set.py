@@ -42,7 +42,7 @@ class MeasurementTool(QMainWindow):
         self.image_label.setFixedSize(800, 600)
         self.image_label.setStyleSheet("background-color: black;")
 
-        load_front_btn = QPushButton("Load Front Image")
+        load_front_btn = QPushButton("Load Image")
         load_front_btn.clicked.connect(self.load_front_image)
 
         next_point_btn = QPushButton("Next Point")
