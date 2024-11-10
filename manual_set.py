@@ -35,6 +35,7 @@ class MeasurementTool(QMainWindow):
 
         # Store user's measurements
         self.user_height = None  # Height in cm
+        self.gender = None       # User's gender
 
         self.scale_factor = None  # Scale factor (cm per pixel)
 
@@ -84,6 +85,8 @@ class MeasurementTool(QMainWindow):
             self.display_image()
             if self.user_height is None:
                 self.get_user_height()  # Prompt user for their height
+            if self.gender is None:
+                self.get_user_gender()  # Prompt user for their gender
             self.next_point()
 
     def load_side_image(self):
@@ -97,6 +100,8 @@ class MeasurementTool(QMainWindow):
             self.display_image()
             if self.user_height is None:
                 self.get_user_height()  # Prompt user for their height
+            if self.gender is None:
+                self.get_user_gender()  # Prompt user for their gender
             self.next_point()
 
     def get_user_height(self):
@@ -110,6 +115,15 @@ class MeasurementTool(QMainWindow):
         else:
             QMessageBox.warning(self, "Input Required", "Height is required.")
             self.get_user_height()
+
+    def get_user_gender(self):
+        items = ("Male", "Female")
+        item, ok = QInputDialog.getItem(self, "Select Gender", "Gender:", items, 0, False)
+        if ok and item:
+            self.gender = item
+        else:
+            QMessageBox.warning(self, "Input Required", "Gender selection is required.")
+            self.get_user_gender()
 
     def display_image(self):
         if self.current_image is not None:
@@ -170,6 +184,10 @@ class MeasurementTool(QMainWindow):
             QMessageBox.warning(self, "Warning", "User height is not set.")
             return
 
+        if self.gender is None:
+            QMessageBox.warning(self, "Warning", "User gender is not set.")
+            return
+
         if len(self.front_points) < len(self.point_front_labels):
             QMessageBox.warning(self, "Warning", "Not all front points have been selected.")
             return
@@ -228,43 +246,83 @@ class MeasurementTool(QMainWindow):
     def estimate_measurements(self, chest_circumference, waist_circumference):
         measurements = {}
 
-        # Using the estimation formulas provided
+        if self.gender == 'Male':
+            # Using the estimation formulas provided for males
 
-        # Hip Circumference
-        hip_circumference = ((chest_circumference + waist_circumference) / 2) * 1.05
-        measurements['Hip Circumference'] = hip_circumference
+            # Hip Circumference
+            hip_circumference = ((chest_circumference + waist_circumference) / 2) * 1.05
+            measurements['Hip Circumference'] = hip_circumference
 
-        # Shoulder Width
-        shoulder_width = (chest_circumference * 0.25) * 1.8
-        measurements['Shoulder Width'] = shoulder_width
+            # Shoulder Width
+            shoulder_width = (chest_circumference * 0.25) * 1.8
+            measurements['Shoulder Width'] = shoulder_width
 
-        # Sleeve Length
-        sleeve_length = (self.user_height * 0.25) * 1.4
-        measurements['Sleeve Length'] = sleeve_length
+            # Sleeve Length
+            sleeve_length = (self.user_height * 0.25) * 1.4
+            measurements['Sleeve Length'] = sleeve_length
 
-        # Inseam Length
-        inseam_length = self.user_height * 0.45
-        measurements['Inseam Length'] = inseam_length
+            # Inseam Length
+            inseam_length = self.user_height * 0.45
+            measurements['Inseam Length'] = inseam_length
 
-        # Neck Circumference
-        neck_circumference = chest_circumference * 0.37
-        measurements['Neck Circumference'] = neck_circumference
+            # Neck Circumference
+            neck_circumference = chest_circumference * 0.37
+            measurements['Neck Circumference'] = neck_circumference
 
-        # Arm Length
-        arm_length = self.user_height * 0.28
-        measurements['Arm Length'] = arm_length
+            # Arm Length
+            arm_length = self.user_height * 0.28
+            measurements['Arm Length'] = arm_length
 
-        # Thigh Circumference
-        thigh_circumference = waist_circumference * 0.68
-        measurements['Thigh Circumference'] = thigh_circumference
+            # Thigh Circumference
+            thigh_circumference = waist_circumference * 0.68
+            measurements['Thigh Circumference'] = thigh_circumference
 
-        # Torso Length
-        torso_length = self.user_height * 0.27
-        measurements['Torso Length'] = torso_length
+            # Torso Length
+            torso_length = self.user_height * 0.27
+            measurements['Torso Length'] = torso_length
 
-        # Leg Length
-        leg_length = self.user_height * 0.53
-        measurements['Leg Length'] = leg_length
+            # Leg Length
+            leg_length = self.user_height * 0.53
+            measurements['Leg Length'] = leg_length
+
+        elif self.gender == 'Female':
+            # Adjusted estimation formulas for females
+
+            # Hip Circumference (generally larger in females)
+            hip_circumference = ((chest_circumference + waist_circumference) / 2) * 1.15
+            measurements['Hip Circumference'] = hip_circumference
+
+            # Shoulder Width (generally narrower in females)
+            shoulder_width = (chest_circumference * 0.25) * 1.6
+            measurements['Shoulder Width'] = shoulder_width
+
+            # Sleeve Length (slightly shorter)
+            sleeve_length = (self.user_height * 0.24) * 1.4
+            measurements['Sleeve Length'] = sleeve_length
+
+            # Inseam Length (slightly shorter)
+            inseam_length = self.user_height * 0.44
+            measurements['Inseam Length'] = inseam_length
+
+            # Neck Circumference (slightly smaller)
+            neck_circumference = chest_circumference * 0.35
+            measurements['Neck Circumference'] = neck_circumference
+
+            # Arm Length (slightly shorter)
+            arm_length = self.user_height * 0.27
+            measurements['Arm Length'] = arm_length
+
+            # Thigh Circumference (slightly larger)
+            thigh_circumference = waist_circumference * 0.75
+            measurements['Thigh Circumference'] = thigh_circumference
+
+            # Torso Length (slightly longer)
+            torso_length = self.user_height * 0.28
+            measurements['Torso Length'] = torso_length
+
+            # Leg Length (slightly shorter)
+            leg_length = self.user_height * 0.52
+            measurements['Leg Length'] = leg_length
 
         return measurements
 
@@ -272,6 +330,11 @@ class MeasurementTool(QMainWindow):
         with open(filename, mode='w', newline='') as file:
             writer = csv.writer(file)
 
+            writer.writerow(["User Information"])
+            writer.writerow(["Gender", self.gender])
+            writer.writerow(["Height (cm)", f"{self.user_height:.2f}"])
+
+            writer.writerow([])
             writer.writerow(["Front Image Points"])
             writer.writerow(["Point Label", "X Coordinate", "Y Coordinate"])
             for i, (x, y) in enumerate(self.front_points):
