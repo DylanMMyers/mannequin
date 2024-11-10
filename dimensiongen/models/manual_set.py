@@ -13,20 +13,18 @@ from PyQt5.QtCore import Qt
 class MeasurementTool(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Measurement Tool")
+        self.setWindowTitle("Measurement Tool - front image first, side image second")
 
         # Variables to hold images, points, and scale factor
         self.front_image = None
         self.current_image = None
         self.front_points = []
         self.side_points = []
-        self.point_front_labels = ["testt", "test2"] 
-        """[
+        self.point_front_labels = [
             "Top of Head", "Left Shoulder", "Right Shoulder", "Chest", "Waist",
             "Left Hip", "Right Hip", "Left Knee", "Right Knee", "Left Ankle",
-            "Right Ankle", "Bottom of Feet"
-        ]"""
-        self.point_side_labels = ["test", "test56356"]
+            "Right Ankle", "Bottom of Feet"]
+        self.point_side_labels = ["Top of Head", "Bottom of Feet"]
         self.point_idx = 0
         self.user_height = None  # Store user's height
         self.scale_factor = None  # Scale factor (inches per pixel)
