@@ -309,7 +309,7 @@ class MeasurementTool(QMainWindow):
             measurements['Neck Circumference'] = neck_circumference
 
             # Arm Length (slightly shorter)
-            arm_length = self.user_height * 0.27
+            arm_length = self.user_height * 0.30
             measurements['Arm Length'] = arm_length
 
             # Thigh Circumference (slightly larger)
@@ -321,7 +321,7 @@ class MeasurementTool(QMainWindow):
             measurements['Torso Length'] = torso_length
 
             # Leg Length (slightly shorter)
-            leg_length = self.user_height * 0.52
+            leg_length = self.user_height * 0.55
             measurements['Leg Length'] = leg_length
 
         return measurements
