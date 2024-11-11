@@ -231,7 +231,7 @@ class IntegratedMeasurementTool(QMainWindow):
         waist_depth_pixels = self.calculate_distance(self.side_points[3], self.side_points[4])
         waist_width_cm = waist_width_pixels * self.scale_factor
         waist_depth_cm = waist_depth_pixels * self.scale_factor
-        waist_circumference = self.calculate_ellipse_circumference(waist_width_cm, waist_depth_cm) * 1.1
+        waist_circumference = self.calculate_ellipse_circumference(waist_width_cm, waist_depth_cm) * 1.2
 
         # Collect and export measurements
         measurements = [
@@ -273,21 +273,21 @@ class IntegratedMeasurementTool(QMainWindow):
                 'Inseam Length': self.user_height * 0.45,
                 'Neck Circumference': chest_circumference * 0.37,
                 'Arm Length': self.user_height * 0.28,
-                'Thigh Circumference': waist_circumference * 0.68,
+                'Thigh Circumference': waist_circumference * 0.7,
                 'Torso Length': self.user_height * 0.27,
                 'Leg Length': self.user_height * 0.53
             })
         else:  # Female
             measurements.update({
                 'Hip Circumference': ((chest_circumference + waist_circumference) / 2) * 1.15,
-                'Shoulder Width': (chest_circumference * 0.25) * 1.6,
+                'Shoulder Width': (chest_circumference * 0.25) * 1.75,
                 'Sleeve Length': (self.user_height * 0.24) * 1.4,
-                'Inseam Length': self.user_height * 0.44,
-                'Neck Circumference': chest_circumference * 0.35,
-                'Arm Length': self.user_height * 0.27,
+                'Inseam Length': self.user_height * 0.46,
+                'Neck Circumference': chest_circumference * 0.39,
+                'Arm Length': self.user_height * 0.30,
                 'Thigh Circumference': waist_circumference * 0.75,
                 'Torso Length': self.user_height * 0.28,
-                'Leg Length': self.user_height * 0.52
+                'Leg Length': self.user_height * 0.55
             })
         return measurements
     def mouse_move_event(self, event):

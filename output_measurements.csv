@@ -1,0 +1,36 @@
+User Information
+Gender,Male
+Height (cm),183.00
+
+Front Image Points
+Point Label,X Coordinate,Y Coordinate
+Top of Head,231,33
+Left Chest,192,187
+Right Chest,281,183
+Left Waist,187,293
+Right Waist,284,294
+Bottom of Feet,238,518
+
+Side Image Points
+Point Label,X Coordinate,Y Coordinate
+Top of Head,238,24
+Chest Front,245,170
+Chest Back,181,176
+Waist Front,255,289
+Waist Back,188,289
+Bottom of Feet,224,544
+
+Measured Circumferences,Value (cm)
+Chest Circumference,97.12
+Waist Circumference,113.50
+
+Estimated Measurements,Value (cm)
+Hip Circumference,110.57
+Shoulder Width,43.70
+Sleeve Length,64.05
+Inseam Length,82.35
+Neck Circumference,35.93
+Arm Length,51.24
+Thigh Circumference,79.45
+Torso Length,49.41
+Leg Length,96.99
