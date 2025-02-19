@@ -1,0 +1,13 @@
+/* index.css or App.css */
+body {
+  background-color: #ffffff; /* White background */
+  color: #000000; /* Black text */
+  font-family: 'Roboto', sans-serif; /* Modern font */
+  margin: 0;
+  padding: 0;
+}
+
+h1, p {
+  margin: 0;
+  padding: 20px;
+}
