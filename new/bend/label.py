@@ -7,18 +7,26 @@ Return as csv
 from flask import Blueprint
 import cv2
 import math
+from pointgen import measure_and_save_contours
 
 main = Blueprint('main', __name__)
 
 def calculate_measurements(front_image_path, side_image_path):
-    # Load images
     front_image = cv2.imread(front_image_path)
     side_image = cv2.imread(side_image_path)
-    
-    # Big bad AI model goes here:
-    # WIP
+        
+    labels = measure_and_save_contours(front_image_path, side_image_path, 172)
 
-    # Define points (example coordinates; replace with actual logic or UI integration)
+    res = {}
+    measurements = ["Height (cm)", "Chest Circumference (cm)"]
+    for key in measurements:
+        x = labels["Front View Measurements"][key] + labels["Side View Measurements"][key]
+        x /= 2
+        res[key] = x
+    
+    return res
+    
+    """# Define points (example coordinates; replace with actual logic or UI integration)
     front_points = {
         "Example point" : (101, 100)
     }
@@ -26,7 +34,7 @@ def calculate_measurements(front_image_path, side_image_path):
     side_points = {
         "Example point 2" : (201, 200)
     }
-
+    
     # Calculate scales
     height_cm = 172  # Example height in cm; replace with user input if needed
     scale = height_cm / (front_points["Example point"][0] - front_points["Example point"][1])
@@ -47,4 +55,4 @@ def calculate_measurements(front_image_path, side_image_path):
     return {
         "Example": example_calc,
         # Add other measurements here as needed
-    }
+    }"""
