@@ -7,33 +7,39 @@ main = Blueprint('main', __name__)
 
 @main.route('/upload', methods=['POST'])
 def upload_images():
-    # check if we receive empty images (redundancy never hurt)
+    # Check if we receive empty images
     if 'front_image' not in request.files or 'side_image' not in request.files:
         return jsonify({"error": "Both front and side images are required"}), 400
+
+    # Get user height from form data
+    try:
+        user_height_cm = float(request.form.get('height', 172))  # Default to 172cm if not provided
+    except ValueError:
+        return jsonify({"error": "Invalid height value"}), 400
 
     front_image = request.files['front_image']
     side_image = request.files['side_image']
 
-    # mkdir uploads to temporarily store our images
+    # Create uploads directory if it doesn't exist
     upload_dir = os.path.join(os.getcwd(), 'app', 'static', 'uploads')
     os.makedirs(upload_dir, exist_ok=True)
     
-    # set image paths
+    # Set image paths
     front_image_path = os.path.join(upload_dir, secure_filename(front_image.filename))
     side_image_path = os.path.join(upload_dir, secure_filename(side_image.filename))
 
-    # save the images
+    # Save the images
     front_image.save(front_image_path)
     side_image.save(side_image_path)
 
-    # call calculate_measurements from label.py
-    measurements = calculate_measurements(front_image_path, side_image_path)
+    try:
+        # Calculate measurements
+        measurements = calculate_measurements(front_image_path, side_image_path, user_height_cm)
+        
+        # Return measurements
+        return jsonify({
+            "measurements": measurements
+        })
 
-    # make the csv
-    csv_path = os.path.join(upload_dir, "measurements.csv")
-    import pandas as pd
-    df = pd.DataFrame(list(measurements.items()), columns=["Measurement", "Value (cm)"])
-    df.to_csv(csv_path, index=False)
-
-    # download the csv to user
-    return send_from_directory(upload_dir, "measurements.csv", as_attachment=True)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

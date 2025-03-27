@@ -112,7 +112,7 @@ def measure_and_save_contours(front_image_path, side_image_path, user_height_cm,
 
 
 # Example Usage:
-front_img_path = r'C:\coding\mannequin\old\dimensiongen\images\IMG_2573.png'
+front_img_path = r'C:\coding\mannequin\old\dimensiongen\images\Screenshot_2024-10-27_182250.png'
 side_img_path = r'C:\coding\mannequin\old\dimensiongen\images\sideview_goated.jpg'
 user_height_cm = 172.0
 
