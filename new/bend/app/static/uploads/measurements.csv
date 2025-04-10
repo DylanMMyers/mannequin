@@ -1,0 +1,24 @@
+Measurement,Value (cm),Description,Gender,Aliases
+Height,172.0,Bottom of feet to top of head,Unisex,Stature
+Chest,165.13450515968256,"Around torso - fullest part of chest, under arms",Unisex,"Bust, Upper Chest"
+Underbust,,Circumference around body directly under breasts,Female,"Band Size, Ribcage"
+Shoulders,40.724578869677586,From outer edge of shoulder to shoulder,Unisex,"Shoulder Width, Shoulder Span, Across Shoulders"
+Neck,165.13450515968256,Around middle of neck (around Adam's apple),Unisex,Neck Circumference
+Arm,63.291370488350815,Shoulder seam to wrist,Unisex,"Arm Length, Sleeve Length"
+Upper_Arm,99.5524460399228,Around thickest part of upper arm,Unisex,Bicep
+Lower_Arm,146.0658615818109,Around thickest part of forearm,Unisex,Forearm
+Wrist,178.63326581899366,Around the wrist,Unisex,
+Waist,139.19781853206226,"Around narrowest torso, typically above belly button",Unisex,Midsection
+Low_Waist,,Around waistline,Unisex,"Drop Waist, Below Waist"
+Hip,106.61165039540518,Around fullest part of hips/buttocks,Unisex,Hips
+Thigh,127.52899335831843,Thickest part of upper leg,Unisex,"Upper Thigh, Upper Leg"
+Knee,81.729598082647,Around knee cap,Unisex,
+Calf,65.00443085630123,Around thickest part of lower leg,Unisex,Lower leg
+Ankle,26.225086790338406,Around fullest part of ankle,Unisex,Leg Opening
+Inseam,81.12465030017214,Inside leg from crotch to ankle,Unisex,Inside Leg
+Outseam,140.52430051816162,Side seam from waist to ankle,Unisex,"Side Seam, Pant Length"
+Rise,59.55920808017509,Front rise from crotch to waist,Unisex,"Front Rise, Crotch Depth"
+Back_Rise,,Back rise from crotch to waist,Unisex,
+Foot_Length,22.795638862942504,Length of foot from heel to toe,Unisex,
+Foot_Width,6.838691658882751,Width of foot at widest point,Unisex,
+Hand_Circumference,178.63326581899366,Around hand at knuckles,Unisex,

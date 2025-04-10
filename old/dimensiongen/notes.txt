@@ -1,0 +1,88 @@
+"C:\coding\mannequin\dimensiongen\dylan_test1.jpg"
+"C:\coding\mannequin\dimensiongen\sideview_test.jpg"
+"C:\coding\mannequin\dimensiongen\kneestogether.jpg"
+"C:\coding\mannequin\dimensiongen\kneestogether_better.jpg"
+"C:\coding\mannequin\dimensiongen\images\frontview_goated.jpg"
+"C:\coding\mannequin\dimensiongen\images\sideview_goated.jpg"
+"C:\coding\mannequin\dimensiongen\images\armstogether.jpg"
+
+python dimension_reading.py "C:\coding\mannequin\dimensiongen\images\frontview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\sideview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\armstogether.jpg" 72 output15.csv
+python vis.py "C:\coding\mannequin\dimensiongen\images\frontview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\sideview_goated.jpg" "C:\coding\mannequin\dimensiongen\images\armstogether.jpg"
+
+1. Specific pose, knees together and face camera directly
+2. Skin tight clothes are very good and basically a necessity
+3. Solid background
+4. Stand straight up and down - AS SYMMETRICAL AS POSSIBLE
+5. Picture at waist level
+6. Avoid 0.5, use 1x lens
+7. Good lighting
+
+We should build a feature for the camera to make it as helpful/easy as possible
+
+Check list:
+Lower leg length: GOOD
+Lower leg width: GOOD
+
+Upper leg length: GOOD
+Upper leg width: GOOD
+
+Lower arm length: DECENT
+Lower arm width: BAD
+
+Upper arm length: GOOD
+Upper arm width: BAD
+
+Torso width: DECENT (Find better method than right and left shoulder, maybe avg of hips and shoulders?)
+Torso length/height: BAD (WTF NOSE AND HEEL)
+
+ALL DEPTHS ARE TRASH RN, FIX LENGHT/WIDTH BEFORE TACKLING
+HOWEVER, WIDTH CAN BE CONSIDERED DEPTH FOR NOW^^^ **********
+
+TORSO WIDTH SHOULD BE AROUND 15-18ish
+HEIGHT SHOULD BE 20-22
+
+TORSO DEPTH :( VERY ANNOYING
+
+ARM WIDTH/DEPTH IDEAS
+
+
+
+
+self.point_labels = [
+            "Shoulders (Left)", "Shoulders (Right)",
+            "Chest (Left)", "Chest (Right)",
+            "Hips (Left)", "Hips (Right)",
+            "Waist (Left)", "Waist (Right)",
+            "Left Upper Arm (Left)", "Left Upper Arm (Right)",
+            "Left Elbow (Left)", "Left Elbow (Right)",
+            "Left Lower Arm (Left)", "Left Lower Arm (Right)",
+            "Right Upper Arm (Left)", "Right Upper Arm (Right)",
+            "Right Elbow (Left)", "Right Elbow (Right)",
+            "Right Lower Arm (Left)", "Right Lower Arm (Right)",
+            "Left Upper Leg (Left)", "Left Upper Leg (Right)",
+            "Left Knee (Left)", "Left Knee (Right)",
+            "Left Lower Leg (Left)", "Left Lower Leg (Right)",
+            "Right Upper Leg (Left)", "Right Upper Leg (Right)",
+            "Right Knee (Left)", "Right Knee (Right)",
+            "Right Lower Leg (Left)", "Right Lower Leg (Right)",
+            "Head Length (Top)", "Head Length (Bottom)",
+            "Arm Length (Left, Top)", "Arm Length (Left, Bottom)",
+            "Arm Length (Right, Top)", "Arm Length (Right, Bottom)",
+            "Torso Length (Top)", "Torso Length (Bottom)",
+            "Leg Length (Left, Top)", "Leg Length (Left, Bottom)",
+            "Leg Length (Right, Top)", "Leg Length (Right, Bottom)"
+        ]
+
+        # Depth/Side list
+        self.side_point_labels = [
+            "Shoulder (Left)", "Shoulder (Right)",
+            "Mid Torso (Left)", "Mid Torso (Right)",
+            "Hip (Left)", "Hip (Right)",
+            "Waist (Left)", "Waist (Right)",
+            "Upper Arm (Left)", "Upper Arm (Right)",
+            "Left Elbow (Side)", "Right Elbow (Side)",
+            "Lower Arm (Left)", "Lower Arm (Right)",
+            "Upper Leg (Left)", "Upper Leg (Right)",
+            "Knee (Left)", "Knee (Right)",
+            "Lower Leg (Left)", "Lower Leg (Right)"
+        ]

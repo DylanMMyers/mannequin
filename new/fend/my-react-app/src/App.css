@@ -1,0 +1,182 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* Split Layout */
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  /* Left Side - Upload Form */
+  .upload-section {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Right Side - Measurements */
+  .measurements-section {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 20px;
+  }
+  
+  /* Header Styles */
+  h1 {
+    font-size: 85px;
+    color: #007bff;
+    margin-bottom: 30px;
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Form Styles */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  small {
+    color: #666;
+    font-style: italic;
+  }
+  
+  input[type="file"],
+  input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  input[type="number"] {
+    width: 150px;
+  }
+  
+  button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Message Styles */
+  .message {
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  .success-message {
+    color: #28a745;
+    background-color: #e8f5e9;
+    border: 1px solid #28a745;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    background-color: #ffebee;
+    border: 1px solid #dc3545;
+  }
+  
+  /* Measurements Display */
+  .measurements-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .measurement-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+  }
+  
+  .measurement-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .measurement-card h3 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+    font-size: 16px;
+  }
+  
+  .measurement-value {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .measurement-card .description {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .measurement-card .gender {
+    color: #888;
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .measurement-card .aliases {
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+    margin: 5px 0;
+  }
+  
