@@ -1,16 +1,8 @@
 # mannequin
-acc project
+welcome to our acc project
 
-goals:
+use our ai features to scan your measurements with 4 poses
 
-figure out the best method of 3d modeling
+get and save your proper measurements with our large database of size charts to compare to
 
-create a working 3D model that can be used to virtually try on clothes
-
-dreams:
-
-use ai to create the model
-
-implement QOL features to improve accuracy of the models
-
-possibly release an app
+save your preferences for certain brands and compare sizes across brands (WIP)
